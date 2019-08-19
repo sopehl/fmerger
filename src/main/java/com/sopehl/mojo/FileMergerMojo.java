@@ -19,19 +19,28 @@ public class FileMergerMojo extends AbstractMojo {
     @Parameter(defaultValue = "src/main/resources/")
     private String resourcePath;
 
+    @Parameter(defaultValue = "=")
+    private String contentSeparator;
+
     public void execute() throws MojoExecutionException, MojoFailureException {
         getLog().info("FMERGER");
 
-        String banner = FileUtils.readFile("/Users/semihokan/IdeaProjects/fmerger/src/main/resources/banner.txt");
-        getLog().info(banner);
+        getLog().info(FileUtils.readFile("banner.txt"));
 
         if (!resourcePath.endsWith(File.pathSeparator)) {
-            getLog().warn("Please add file separator to end of resource path on pom.xml");
-            resourcePath = resourcePath.concat(File.pathSeparator);
+            String warnMessageFormat = "Please add file separator (%s) to end of resource path on pom.xml";
+            getLog().warn(String.format(warnMessageFormat, File.separator));
+            resourcePath = resourcePath.concat(File.separator);
         }
 
         for (String path : paths) {
-            System.out.println(FileUtils.listFiles(new File(resourcePath + path)));
+            List<File> files = FileUtils.listFiles(new File(resourcePath + path));
+            for (File item : files) {
+                String content = FileUtils.readFile(item);
+                System.out.println(content);
+            }
+
+            System.out.println(FileUtils.generateContentSeparator(contentSeparator));
         }
     }
 }

@@ -7,12 +7,16 @@ import java.util.List;
 
 public class FileUtils {
 
+    public static final Integer DEFAULT_CONTENT_SEPARATOR_NUMBER = 20;
+
     public static String readFile(File file){
         String tempData = "";
         String rawData = "";
+        FileReader fileReader = null;
+        BufferedReader bufferedReader = null;
         try {
-            FileReader fileReader = new FileReader(file);
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            fileReader = new FileReader(file);
+            bufferedReader = new BufferedReader(fileReader);
             while ((tempData = bufferedReader.readLine()) != null) {
                 rawData = rawData.concat(tempData);
                 rawData = rawData.concat("\n");
@@ -21,9 +25,39 @@ public class FileUtils {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (fileReader != null) {
+                    fileReader.close();
+                }
+
+                if (bufferedReader != null) {
+                    bufferedReader.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         }
 
         return rawData;
+    }
+
+    public static String readFileAsResourceStream(String resource){
+        String val = "";
+        InputStream resourceAsStream = FileUtils.class.getResourceAsStream(resource);
+        BufferedReader r = new BufferedReader(new InputStreamReader(resourceAsStream));
+
+        String l;
+        try {
+            while((l = r.readLine()) != null) {
+                val = val.concat(l);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return val;
     }
 
     public static String readFile(String path) {
@@ -37,8 +71,16 @@ public class FileUtils {
             return Collections.emptyList();
         }
 
-        final List<File> fileList = Arrays.asList(files);
-        return fileList;
+        return Arrays.asList(files);
+    }
+
+    public static String generateContentSeparator(String separator) {
+        String temp = "";
+        for (int i = 0; i < DEFAULT_CONTENT_SEPARATOR_NUMBER; i++) {
+            temp = temp.concat(separator);
+        }
+
+        return temp;
     }
 
 }

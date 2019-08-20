@@ -11,6 +11,7 @@ public class FileUtilsTest {
     @Test
     public void readFileTest_success() {
         String banner = FileUtils.readFile("/Users/semihokan/IdeaProjects/fmerger/src/main/resources/banner.txt");
+        System.out.println(banner);
         Assert.assertTrue(banner.length() > 0);
     }
 

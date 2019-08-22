@@ -1,23 +1,23 @@
 package com.sopehl.model;
 
-import org.apache.maven.plugins.annotations.Parameter;
-
 import java.io.File;
 
 public class Output {
 
-    private String type;
+    private String protocol;
 
     private String path;
 
     private String extension;
 
-    public String getType() {
-        return type;
+    private String finalName;
+
+    public String getProtocol() {
+        return protocol;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setProtocol(String protocol) {
+        this.protocol = protocol;
     }
 
     public String getPath() {
@@ -42,10 +42,18 @@ public class Output {
         this.extension = extension;
     }
 
+    public String getFinalName() {
+        return finalName;
+    }
+
+    public void setFinalName(String finalName) {
+        this.finalName = finalName;
+    }
+
     @Override
     public String toString() {
         return "Output{" +
-                "type='" + type + '\'' +
+                "type='" + protocol + '\'' +
                 ", path='" + path + '\'' +
                 ", extension='" + extension + '\'' +
                 '}';

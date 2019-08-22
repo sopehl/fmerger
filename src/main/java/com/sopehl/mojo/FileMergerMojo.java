@@ -4,6 +4,7 @@ import com.sopehl.impl.FileWriter;
 import com.sopehl.model.Output;
 import com.sopehl.spec.Writeable;
 import com.sopehl.util.FileUtils;
+import com.sopehl.util.Generator;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -49,11 +50,16 @@ public class FileMergerMojo extends AbstractMojo {
             for (File item : files) {
                 content = content.concat(FileUtils.readFile(item)).concat("\n");
             }
-
             content = content.concat(FileUtils.generateContentSeparator(contentSeparator)).concat("\n");
         }
 
-        writer = new FileWriter(new File(output.getPath() + "myFmerger." + output.getExtension()));
+        String finalName = output.getFinalName() != null ?
+                Generator.generateFinalName(output.getFinalName()) : Generator.generateFinalName();
+
+        final String relativePath = output.getPath() + finalName +"." + output.getExtension();
+        getLog().info("Uploaded merged file : " + relativePath);
+
+        writer = new FileWriter(new File(relativePath));
         writer.write(content);
     }
 }

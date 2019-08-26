@@ -1,7 +1,11 @@
 package com.sopehl.mojo;
 
+import com.sopehl.impl.ArchiveProvider;
+import com.sopehl.impl.FileArchive;
 import com.sopehl.impl.FileWriter;
+import com.sopehl.model.Archive;
 import com.sopehl.model.Output;
+import com.sopehl.spec.Archivable;
 import com.sopehl.spec.Writeable;
 import com.sopehl.util.FileUtils;
 import com.sopehl.util.Generator;
@@ -30,7 +34,12 @@ public class FileMergerMojo extends AbstractMojo {
     @Parameter
     private Output output;
 
+    @Parameter
+    private Archive archive;
+
     private Writeable writer;
+
+    private ArchiveProvider archiveProvider;
 
     public void execute() throws MojoExecutionException, MojoFailureException {
         getLog().info(String.format(FileUtils.readFileAsResourceStream("/banner.txt"), VersionUtils.getPluginVersion()));
@@ -59,5 +68,10 @@ public class FileMergerMojo extends AbstractMojo {
 
         writer = new FileWriter(new File(relativePath));
         writer.write(content);
+
+        ArchiveProvider archiveProvider = new ArchiveProvider(new FileArchive());
+        archiveProvider.archive();
+
+        getLog().info(archive.toString());
     }
 }

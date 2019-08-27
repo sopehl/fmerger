@@ -4,4 +4,6 @@ public interface Archivable {
 
     Boolean archive();
 
+    Boolean snapshot();
+
 }

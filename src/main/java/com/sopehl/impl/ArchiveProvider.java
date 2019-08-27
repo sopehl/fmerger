@@ -11,11 +11,15 @@ public class ArchiveProvider {
     }
 
     public Boolean archive() {
-        boolean archivable = Boolean.parseBoolean(System.getProperty("archive", "false"));
-        if (archivable) {
-            archiver.archive();
+        throw new UnsupportedOperationException();
+    }
+
+    public Boolean snapshot() {
+        boolean isSnapshot = Boolean.parseBoolean(System.getProperty("snapshot", "false"));
+        if (isSnapshot) {
+            archiver.snapshot();
         }
 
-        return archivable;
+        return isSnapshot;
     }
 }

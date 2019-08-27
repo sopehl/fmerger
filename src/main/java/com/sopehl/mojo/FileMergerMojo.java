@@ -5,7 +5,6 @@ import com.sopehl.impl.FileArchive;
 import com.sopehl.impl.FileWriter;
 import com.sopehl.model.Archive;
 import com.sopehl.model.Output;
-import com.sopehl.spec.Archivable;
 import com.sopehl.spec.Writeable;
 import com.sopehl.util.FileUtils;
 import com.sopehl.util.Generator;
@@ -63,15 +62,15 @@ public class FileMergerMojo extends AbstractMojo {
         String finalName = output.getFinalName() != null ?
                 Generator.generateFinalName(output.getFinalName()) : Generator.generateFinalName();
 
-        final String relativePath = output.getPath() + finalName +"." + output.getExtension();
+        String extension = output.getExtension();
+        String fileNameWithExtension = finalName + "." + extension;
+        final String relativePath = output.getPath() + fileNameWithExtension;
         getLog().info("Uploaded merged file : " + relativePath);
 
         writer = new FileWriter(new File(relativePath));
         writer.write(content);
 
-        ArchiveProvider archiveProvider = new ArchiveProvider(new FileArchive());
-        archiveProvider.archive();
-
-        getLog().info(archive.toString());
+        ArchiveProvider archiveProvider = new ArchiveProvider(new FileArchive(output.getPath(), archive.getSnapshotPath(), finalName, extension));
+        archiveProvider.snapshot();
     }
 }

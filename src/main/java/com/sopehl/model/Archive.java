@@ -6,6 +6,8 @@ public class Archive {
 
     private String path;
 
+    private String snapshotPath;
+
     public String getProtocol() {
         return protocol;
     }
@@ -20,6 +22,14 @@ public class Archive {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public String getSnapshotPath() {
+        return snapshotPath;
+    }
+
+    public void setSnapshotPath(String snapshotPath) {
+        this.snapshotPath = snapshotPath;
     }
 
     @Override

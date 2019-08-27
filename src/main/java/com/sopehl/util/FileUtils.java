@@ -1,5 +1,8 @@
 package com.sopehl.util;
 
+import org.apache.maven.plugin.logging.Log;
+import org.apache.maven.plugin.logging.SystemStreamLog;
+
 import java.io.*;
 import java.util.Arrays;
 import java.util.Collections;
@@ -8,6 +11,8 @@ import java.util.List;
 public class FileUtils {
 
     public static final Integer DEFAULT_CONTENT_SEPARATOR_NUMBER = 20;
+
+    private static final Log LOG = new SystemStreamLog();
 
     public static String readFile(File file){
         String tempData;
@@ -109,6 +114,21 @@ public class FileUtils {
             }
         }
 
+    }
+
+    public static boolean moveFile(File source, String where, String newFileName) {
+        File target = new File(where);
+        where = checkEndOfPath(where);
+
+        if(target.mkdir()){
+            LOG.info("Path is created : " + where);
+        }
+
+        return source.renameTo(new File(where + newFileName));
+    }
+
+    public static String checkEndOfPath(String path) {
+        return path.endsWith(File.separator) ? path : path + File.separator;
     }
 
 }

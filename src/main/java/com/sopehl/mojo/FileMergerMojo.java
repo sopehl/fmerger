@@ -34,7 +34,7 @@ public class FileMergerMojo extends AbstractMojo {
     private Output output;
 
     @Parameter
-    private Archive archive;
+    private Archive archive = null;
 
     private Writeable writer;
 
@@ -70,7 +70,16 @@ public class FileMergerMojo extends AbstractMojo {
         writer = new FileWriter(new File(relativePath));
         writer.write(content);
 
-        ArchiveProvider archiveProvider = new ArchiveProvider(new FileArchive(output.getPath(), archive.getSnapshotPath(), finalName, extension));
-        archiveProvider.snapshot();
+        if (this.archive != null) {
+            archiveProvider = new ArchiveProvider(new FileArchive(output.getPath(), archive.getSnapshotPath(), finalName, extension));
+            //String snapshotParam = System.getProperty("snapshot");
+            if (archive.getSnapshotPath() != null) {
+                archiveProvider.snapshot();
+            }
+
+            if (archive.getPath() != null) {
+                archiveProvider.archive();
+            }
+        }
     }
 }

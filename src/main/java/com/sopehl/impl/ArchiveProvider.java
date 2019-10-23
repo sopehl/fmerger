@@ -11,7 +11,7 @@ public class ArchiveProvider {
     }
 
     public Boolean archive() {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("Archive is not supported yet.");
     }
 
     public Boolean snapshot() {

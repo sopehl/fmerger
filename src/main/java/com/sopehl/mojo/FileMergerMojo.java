@@ -72,12 +72,14 @@ public class FileMergerMojo extends AbstractMojo {
 
         if (this.archive != null) {
             archiveProvider = new ArchiveProvider(new FileArchive(output.getPath(), archive.getSnapshotPath(), finalName, extension));
-            //String snapshotParam = System.getProperty("snapshot");
-            if (archive.getSnapshotPath() != null) {
+            Boolean activatedSnapshot = Boolean.parseBoolean(System.getProperty("snapshot"));
+            Boolean activatedArchive = Boolean.parseBoolean(System.getProperty("archive"));
+
+            if (archive.getSnapshotPath() != null && activatedSnapshot) {
                 archiveProvider.snapshot();
             }
 
-            if (archive.getPath() != null) {
+            if (archive.getPath() != null && activatedArchive) {
                 archiveProvider.archive();
             }
         }

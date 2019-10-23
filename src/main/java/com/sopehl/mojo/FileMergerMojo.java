@@ -40,10 +40,10 @@ public class FileMergerMojo extends AbstractMojo {
 
     private ArchiveProvider archiveProvider;
 
-    public void execute() throws MojoExecutionException, MojoFailureException {
+    public void execute() throws MojoExecutionException {
         getLog().info(String.format(FileUtils.readFileAsResourceStream("/banner.txt"), VersionUtils.getPluginVersion()));
 
-        if (!resourcePath.endsWith(File.separator)) {
+        if (!resourcePath.endsWith("/")) {
             String warnMessageFormat = "Please add file separator (%s) to end of resource path on pom.xml";
             getLog().warn(String.format(warnMessageFormat, File.separator));
             resourcePath = resourcePath.concat(File.separator);

@@ -70,10 +70,15 @@ public class FileMergerMojo extends AbstractMojo {
         writer = new FileWriter(new File(relativePath));
         writer.write(content);
 
+        boolean printConsole = Boolean.parseBoolean(System.getProperty("console"));
+        if (printConsole) {
+            getLog().info("Merged Content: \n" + content);
+        }
+
         if (this.archive != null) {
             archiveProvider = new ArchiveProvider(new FileArchive(output.getPath(), archive.getSnapshotPath(), finalName, extension));
-            Boolean activatedSnapshot = Boolean.parseBoolean(System.getProperty("snapshot"));
-            Boolean activatedArchive = Boolean.parseBoolean(System.getProperty("archive"));
+            boolean activatedSnapshot = Boolean.parseBoolean(System.getProperty("snapshot"));
+            boolean activatedArchive = Boolean.parseBoolean(System.getProperty("archive"));
 
             if (archive.getSnapshotPath() != null && activatedSnapshot) {
                 archiveProvider.snapshot();

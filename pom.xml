@@ -6,7 +6,7 @@
 
     <groupId>com.sopehl</groupId>
     <artifactId>fmerger</artifactId>
-    <version>1.0.1-alpha</version>
+    <version>1.0.2-alpha</version>
 
     <packaging>maven-plugin</packaging>
 

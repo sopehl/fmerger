@@ -16,6 +16,9 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Mojo(name = "merge")
@@ -51,13 +54,19 @@ public class FileMergerMojo extends AbstractMojo {
 
         String content = "";
 
+        List<File> files = new ArrayList<>();
         for (String path : paths) {
-            List<File> files = FileUtils.listFiles(new File(resourcePath + path));
-            for (File item : files) {
-                content = content.concat(FileUtils.readFile(item)).concat("\n");
-            }
-            content = content.concat(FileUtils.generateContentSeparator(contentSeparator)).concat("\n");
+            List<File> filesInPath = FileUtils.listFiles(new File(resourcePath + path));
+            files.addAll(filesInPath);
         }
+
+        Comparator<File> timestampComparator = (f1, f2) -> ((Long) f1.lastModified()).compareTo(f2.lastModified());
+        files.sort(timestampComparator);
+
+        for (File item : files) {
+            content = content.concat(FileUtils.readFile(item)).concat("\n");
+        }
+        content = content.concat(FileUtils.generateContentSeparator(contentSeparator)).concat("\n");
 
         String finalName = output.getFinalName() != null ?
                 Generator.generateFinalName(output.getFinalName()) : Generator.generateFinalName();

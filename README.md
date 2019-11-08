@@ -21,8 +21,55 @@ specific file group separator can be configured, if it is became involved in con
 
 ### Configurations
 
+The all piece of fmerger plugin will be analyzed step by step and at the end of this section, you can see the big picture of your build tag in your pom.xml file.
+
+---
+
+Path of all collected resources(parent) 
 ```xml
-	<build>
+	<resourcePath>src/main/resources/</resourcePath>
+```
+
+---
+
+File group content separator configured with twise minus, default is single minus. 
+```xml
+	<contentSeparator>--</contentSeparator>
+```
+
+---
+
+All folders that are collected in ***resourcePath*** folder that is configured previously. Maybe those paths can be configured with the developers name or nickname etc.
+***Note:*** That mechanism cannot work like recursive so it cannot find the inner folders.
+Your java app side will be like:
+
+```
+.
++-- src
+|   +-- main
+|   	+-- resources
+|   		+-- okan.pehlivan
+|   			+-- test.sql
+|   			+-- another-test.sql
+|   		+-- other.developer
+|   			+-- developer-test.sql
+
+```
+
+```xml
+<paths>
+        <param>okan.pehlivan</param>
+        <param>other.developer</param>
+    </paths>
+```
+
+---
+
+
+> Last presentation of build tag in your pom.xml file of your java application.
+
+```xml
+<build>
         <plugins>
             <plugin>
                 <groupId>com.sopehl</groupId>
@@ -40,13 +87,13 @@ specific file group separator can be configured, if it is became involved in con
                 <configuration>
                     <resourcePath>src/main/resources/</resourcePath>
 
+                    <contentSeparator>---</contentSeparator>
+
                     <paths>
                         <param>okan.pehlivan</param>
                         <param>isah.bllaca</param>
                         <param>dummy.developer</param>
                     </paths>
-
-                    <contentSeparator>--</contentSeparator>
 
                     <output>
                         <protocol>file</protocol>

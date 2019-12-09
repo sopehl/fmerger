@@ -1,5 +1,7 @@
 package com.sopehl.model;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.File;
 
 public class Output {
@@ -43,7 +45,8 @@ public class Output {
     }
 
     public String getFinalNamePrefix() {
-        return finalNamePrefix;
+        String finalNamePrefix = System.getProperty("finalNamePrefix");
+        return StringUtils.isNotEmpty(finalNamePrefix) ? finalNamePrefix : this.finalNamePrefix;
     }
 
     public void setFinalNamePrefix(String finalNamePrefix) {

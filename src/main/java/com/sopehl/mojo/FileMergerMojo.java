@@ -9,6 +9,7 @@ import com.sopehl.spec.Writeable;
 import com.sopehl.util.FileUtils;
 import com.sopehl.util.Generator;
 import com.sopehl.util.VersionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Mojo;
@@ -42,6 +43,13 @@ public class FileMergerMojo extends AbstractMojo {
     private ArchiveProvider archiveProvider;
 
     public void execute() throws MojoExecutionException {
+        String contentSeparatorArgs = System.getProperty("contentSeparator");
+        if (StringUtils.isNotEmpty(contentSeparatorArgs)) {
+            this.contentSeparator = contentSeparatorArgs;
+        }
+
+        getLog().debug("Content separator : " + this.contentSeparator);
+
         getLog().info(String.format(FileUtils.readFileAsResourceStream("/banner.txt"), VersionUtils.getPluginVersion()));
 
         if (!resourcePath.endsWith("/")) {
@@ -64,7 +72,7 @@ public class FileMergerMojo extends AbstractMojo {
         for (File item : files) {
             content = content.concat(FileUtils.readFile(item)).concat("\n");
         }
-        content = content.concat(FileUtils.generateContentSeparator(contentSeparator)).concat("\n");
+        content = content.concat(FileUtils.generateContentSeparator(this.contentSeparator)).concat("\n");
 
         String finalName = output.getFinalNamePrefix() != null ?
                 Generator.generateFinalName(output.getFinalNamePrefix()) : Generator.generateFinalName();

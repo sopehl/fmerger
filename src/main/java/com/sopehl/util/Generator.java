@@ -19,6 +19,11 @@ public class Generator {
     }
 
     public static String generateFinalName(String prefix) {
+        boolean disabledSuffix = Boolean.parseBoolean(System.getProperty("disableFinalNameSuffix"));
+        if (disabledSuffix) {
+            return prefix;
+        }
+
         return prefix + "-" + generateFinalName();
     }
 

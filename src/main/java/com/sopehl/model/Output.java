@@ -10,7 +10,7 @@ public class Output {
 
     private String extension;
 
-    private String finalName;
+    private String finalNamePrefix;
 
     public String getProtocol() {
         return protocol;
@@ -42,12 +42,12 @@ public class Output {
         this.extension = extension;
     }
 
-    public String getFinalName() {
-        return finalName;
+    public String getFinalNamePrefix() {
+        return finalNamePrefix;
     }
 
-    public void setFinalName(String finalName) {
-        this.finalName = finalName;
+    public void setFinalNamePrefix(String finalNamePrefix) {
+        this.finalNamePrefix = finalNamePrefix;
     }
 
     @Override

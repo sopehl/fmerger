@@ -155,4 +155,5 @@ Note: Your snapshot output file will be marked with ***-SNAPSHOT*** suffix.
 	-Dsnapshot // to trigger the snapshot options
 	-DfinalNamePrefix // override or specify the finalName(file name) prefix externally
 	-DdisableFinalNameSuffix // disable the final name suffix, by default it is {timestamp-randomNumber}
+	-DcontentSeperator // override the content separator externally
 	

@@ -153,4 +153,5 @@ Note: Your snapshot output file will be marked with ***-SNAPSHOT*** suffix.
 	-Dconsole // to print last output file content in console
 	-Darchive // to trigger archive options
 	-Dsnapshot // to trigger the snapshot options
+	-DfinalNamePrefix // override or specify the finalName(file name) prefix externally
 	

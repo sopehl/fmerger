@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
 
-public class Generator {
+public class GeneratorUtils {
 
     public static final String DEFAULT_DATE_FORMAT_FOR_GENERATOR = "yyyyMMddHHmmss";
 

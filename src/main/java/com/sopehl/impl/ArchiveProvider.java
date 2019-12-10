@@ -11,13 +11,9 @@ public class ArchiveProvider {
     }
 
     public Boolean archive() {
-        throw new UnsupportedOperationException("Archive is not supported yet.");
-    }
-
-    public Boolean snapshot() {
-        boolean isSnapshot = Boolean.parseBoolean(System.getProperty("snapshot", "false"));
+        boolean isSnapshot = Boolean.parseBoolean(System.getProperty("archive", "false"));
         if (isSnapshot) {
-            archiver.snapshot();
+            archiver.archive();
         }
 
         return isSnapshot;

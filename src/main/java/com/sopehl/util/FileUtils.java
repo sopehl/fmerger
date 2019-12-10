@@ -1,18 +1,20 @@
 package com.sopehl.util;
 
+import org.apache.maven.monitor.logging.DefaultLog;
 import org.apache.maven.plugin.logging.Log;
-import org.apache.maven.plugin.logging.SystemStreamLog;
+import org.codehaus.plexus.logging.console.ConsoleLogger;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class FileUtils {
 
-    public static final Integer DEFAULT_CONTENT_SEPARATOR_NUMBER = 20;
+    private static final Integer DEFAULT_CONTENT_SEPARATOR_NUMBER = 20;
 
-    private static final Log LOG = new SystemStreamLog();
+    private static final Log LOG = new DefaultLog(new ConsoleLogger());
 
     public static String readFile(File file){
         String tempData;
@@ -26,8 +28,6 @@ public class FileUtils {
                 rawData = rawData.concat(tempData);
                 rawData = rawData.concat("\n");
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -58,9 +58,7 @@ public class FileUtils {
             while ((l = r.readLine()) != null) {
                 val = val.concat(l).concat("\n");
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (NullPointerException e) {
+        } catch (IOException | NullPointerException e) {
             e.printStackTrace();
         }
 
@@ -129,6 +127,17 @@ public class FileUtils {
 
     public static String checkEndOfPath(String path) {
         return path.endsWith(File.separator) ? path : path + File.separator;
+    }
+
+    public static void cleanAllWorkingTree(List<File> files) {
+        files.forEach(file -> {
+            try {
+                final boolean isDeleted = Files.deleteIfExists(file.toPath());
+                LOG.debug(file.getName() + " is deleted : " + isDeleted);
+            } catch (IOException e) {
+                LOG.error(e);
+            }
+        });
     }
 
 }

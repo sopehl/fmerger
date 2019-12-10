@@ -3,11 +3,13 @@ package com.sopehl.mojo;
 import com.sopehl.impl.ArchiveProvider;
 import com.sopehl.impl.FileArchive;
 import com.sopehl.impl.FileWriter;
+import com.sopehl.impl.GitVersionControl;
 import com.sopehl.model.Archive;
 import com.sopehl.model.Output;
+import com.sopehl.model.Scm;
 import com.sopehl.spec.Writeable;
 import com.sopehl.util.FileUtils;
-import com.sopehl.util.Generator;
+import com.sopehl.util.GeneratorUtils;
 import com.sopehl.util.VersionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.plugin.AbstractMojo;
@@ -16,6 +18,10 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -42,6 +48,9 @@ public class FileMergerMojo extends AbstractMojo {
 
     private ArchiveProvider archiveProvider;
 
+    @Parameter
+    private Scm scm = null;
+
     public void execute() throws MojoExecutionException {
         String contentSeparatorArgs = System.getProperty("contentSeparator");
         if (StringUtils.isNotEmpty(contentSeparatorArgs)) {
@@ -66,7 +75,7 @@ public class FileMergerMojo extends AbstractMojo {
             files.addAll(filesInPath);
         }
 
-        Comparator<File> timestampComparator = (f1, f2) -> ((Long) f1.lastModified()).compareTo(f2.lastModified());
+        Comparator<File> timestampComparator = Comparator.comparingLong(File::lastModified);
         files.sort(timestampComparator);
 
         for (File item : files) {
@@ -75,7 +84,7 @@ public class FileMergerMojo extends AbstractMojo {
         content = content.concat(FileUtils.generateContentSeparator(this.contentSeparator)).concat("\n");
 
         String finalName = output.getFinalNamePrefix() != null ?
-                Generator.generateFinalName(output.getFinalNamePrefix()) : Generator.generateFinalName();
+                GeneratorUtils.generateFinalName(output.getFinalNamePrefix()) : GeneratorUtils.generateFinalName();
 
         String extension = output.getExtension();
         String fileNameWithExtension = finalName + "." + extension;
@@ -91,15 +100,11 @@ public class FileMergerMojo extends AbstractMojo {
         }
 
         if (this.archive != null) {
-            archiveProvider = new ArchiveProvider(new FileArchive(output.getPath(), archive.getSnapshotPath(), finalName, extension));
-            boolean activatedSnapshot = Boolean.parseBoolean(System.getProperty("snapshot"));
+            archiveProvider = new ArchiveProvider(new FileArchive(output.getPath(), archive.getPath(), finalName, extension, new GitVersionControl(), this.scm));
             boolean activatedArchive = Boolean.parseBoolean(System.getProperty("archive"));
 
-            if (archive.getSnapshotPath() != null && activatedSnapshot) {
-                archiveProvider.snapshot();
-            }
-
             if (archive.getPath() != null && activatedArchive) {
+                FileUtils.cleanAllWorkingTree(files);
                 archiveProvider.archive();
             }
         }

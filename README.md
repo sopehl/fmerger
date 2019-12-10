@@ -65,17 +65,17 @@ Your java app side will be like:
 
 ---
 
-The following configuration tags for all-in-one merged file outputs. It contains protocol(file directory), finalName(prefix of output file), 
+The following configuration tags for all-in-one merged file outputs. It contains protocol(file directory), finalNamePrefix,
 path(last path to upload output file) and extension of file like .sql, .txt etc.
 
 Note: The output file name will contains the timestamp and random number. The output file template seems like:
 
-	${output.finalName}-<timestamp>-<randomNumber>-${output.extension}
+	${output.finalNamePrefix}-<timestamp>-<randomNumber>-${output.extension}
 
 ```xml
 <output>
     <protocol>file</protocol>
-    <finalName>my-file</finalName>
+    <finalNamePrefix>my-file</finalNamePrefix>
     <path>/Users/semihokan/fmerger-collection</path>
     <extension>sql</extension>
 </output>
@@ -132,7 +132,7 @@ Note: Your snapshot output file will be marked with ***-SNAPSHOT*** suffix.
 
                 <output>
                     <protocol>file</protocol>
-                    <finalName>my-file</finalName>
+                    <finalNamePrefix>my-file</finalNamePrefix>
                     <path>/Users/semihokan/fmerger-collection</path>
                     <extension>sql</extension>
                 </output>

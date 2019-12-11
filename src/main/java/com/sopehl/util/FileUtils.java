@@ -132,8 +132,10 @@ public class FileUtils {
     public static void cleanAllWorkingTree(List<File> files) {
         files.forEach(file -> {
             try {
-                final boolean isDeleted = Files.deleteIfExists(file.toPath());
-                LOG.debug(file.getName() + " is deleted : " + isDeleted);
+                if (!file.getName().equals(".keep")) {
+                    final boolean isDeleted = Files.deleteIfExists(file.toPath());
+                    LOG.debug(file.getName() + " is deleted : " + isDeleted);
+                }
             } catch (IOException e) {
                 LOG.error(e);
             }

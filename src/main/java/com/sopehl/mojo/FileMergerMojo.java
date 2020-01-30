@@ -48,6 +48,11 @@ public class FileMergerMojo extends AbstractMojo {
     private Scm scm = null;
 
     public void execute() throws MojoExecutionException {
+        String outputPathParam = System.getProperty("outputPath");
+        if (StringUtils.isNotEmpty(outputPathParam)) {
+            output.setPath(outputPathParam);
+        }
+
         String contentSeparatorArgs = System.getProperty("contentSeparator");
         if (StringUtils.isNotEmpty(contentSeparatorArgs)) {
             this.contentSeparator = contentSeparatorArgs;

@@ -45,10 +45,9 @@ public class FileArchive implements Archivable {
         LOG.info("File moved success: " + source.getAbsolutePath() + " --> " + targetOutputPath + archiveFileNameWithExtension);
         boolean isMoved = FileUtils.moveFile(source, targetOutputPath, archiveFileNameWithExtension);
 
-        if (isMoved) {
-            if(this.scm != null) {
-                versionControl.commitAndPush(this.scm);
-            }
+        if (isMoved & this.scm != null) {
+            LOG.info("SCM processing.");
+            versionControl.commitAndPush(this.scm);
         }
 
         return isMoved;
